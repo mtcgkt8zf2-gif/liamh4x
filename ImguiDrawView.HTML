@@ -1,0 +1,51 @@
+// ============================================================================
+// ImGuiDrawView.mm (COMPLETE REPLACEMENT)
+// ============================================================================
+#import "LoadView/Includes.h"
+#import "LoadView/DTTJailbreakDetection.h"
+#import "imgui/Il2cpp.h"
+#import "Utils/Macros.h"
+#import "Utils/hack/Function.h"
+#import "Utils/Mem.h"
+#include "font.h"
+#include "hook/hook.h"
+#import "Other/Vector/Vector3.h"
+#import "Other/Vector/Vector2.h"
+#import "Other/Vector/Quaternion.h"
+#import "Other/Vector/Monostring.h"
+#include "Other/Icon.h"
+#include "Other/iconcpp.h"
+#import "Esp.h"
+#include "Other/AimKill.cpp"
+#import "ImGuiDrawView.h"
+#include <thread>
+#include <chrono>
+
+@implementation ImGuiDrawView
+
++ (BOOL)isMenuShowing {
+    return MenDeal;
+}
+
++ (void)showChange:(BOOL)open {
+    MenDeal = open;
+}
+
+- (void)updateIOWithTouchEvent:(UIEvent *)event {
+    UITouch *anyTouch = event.allTouches.anyObject;
+    CGPoint touchLocation = [anyTouch locationInView:self.view];
+    ImGuiIO &io = ImGui::GetIO();
+    io.MousePos = ImVec2(touchLocation.x, touchLocation.y);
+
+    BOOL hasActiveTouch = NO;
+    for (UITouch *touch in event.allTouches) {
+        if (touch.phase != UITouchPhaseEnded && touch.phase != UITouchPhaseCancelled) {
+            hasActiveTouch = YES;
+            break;
+        }
+    }
+    io.MouseDown[0] = hasActiveTouch;
+}
+
+// ... rest of your implementation
+@end
